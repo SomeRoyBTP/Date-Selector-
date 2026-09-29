@@ -30,16 +30,31 @@
             width: 100%;
         }
 
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        /* ===== PAGE 1 STYLES ===== */
+        .page-1 {
+            display: flex;
+            flex-direction: column;
+        }
+
         .hero {
             position: relative;
-            height: 250px;
+            height: 300px;
             background-size: cover;
             background-position: center;
             display: flex;
-            align-items: flex-end;
-            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
             text-align: center;
-            padding: 40px 20px 30px;
+            padding: 40px 20px 60px;
         }
 
         .hero::before {
@@ -60,19 +75,68 @@
         }
 
         .hero h1 {
-            font-size: 32px;
+            font-size: 36px;
             font-weight: 700;
-            margin-bottom: 8px;
+            margin-bottom: 12px;
             line-height: 1.2;
         }
 
         .hero p {
-            font-size: 14px;
+            font-size: 15px;
             opacity: 0.95;
             line-height: 1.4;
         }
 
-        .content {
+        .button-group-hero {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .btn-yes {
+            background: linear-gradient(135deg, #c084fc 0%, #e879f9 100%);
+            color: white;
+            border: none;
+            padding: 14px 40px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 10px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(192, 132, 252, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .btn-yes:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(192, 132, 252, 0.4);
+        }
+
+        .btn-yes:active {
+            transform: translateY(0);
+        }
+
+        .btn-no {
+            background: #f0f0f0;
+            color: #333;
+            border: none;
+            padding: 14px 40px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .btn-no:hover {
+            transform: translate(var(--tx, 0), var(--ty, 0));
+        }
+
+        /* ===== PAGE 2 STYLES ===== */
+        .page-2 {
             padding: 40px 30px;
         }
 
@@ -92,6 +156,39 @@
             text-transform: uppercase;
             letter-spacing: 0.5px;
             opacity: 0.7;
+        }
+
+        .date-time-picker {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .input-group label {
+            font-size: 13px;
+            font-weight: 500;
+            color: #666;
+            margin-bottom: 6px;
+        }
+
+        .input-group input {
+            padding: 12px;
+            border: 2px solid #e0d5ff;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #c084fc;
+            box-shadow: 0 0 0 3px rgba(192, 132, 252, 0.1);
         }
 
         .options-grid {
@@ -145,10 +242,6 @@
             background: #faf8ff;
         }
 
-        .option-card input[type="radio"]:checked + .option-label:hover {
-            transform: scale(1.05);
-        }
-
         .button-group {
             display: flex;
             gap: 12px;
@@ -200,17 +293,43 @@
             font-style: italic;
         }
 
+        .success-message {
+            display: none;
+            text-align: center;
+            color: #10b981;
+            font-weight: 500;
+            margin-top: 15px;
+            padding: 10px;
+            background: #ecfdf5;
+            border-radius: 8px;
+        }
+
         @media (max-width: 480px) {
             .hero {
-                height: 200px;
+                height: 250px;
+                padding: 30px 20px 50px;
             }
 
             .hero h1 {
-                font-size: 26px;
+                font-size: 28px;
             }
 
-            .content {
+            .button-group-hero {
+                gap: 12px;
+            }
+
+            .btn-yes,
+            .btn-no {
+                padding: 12px 30px;
+                font-size: 14px;
+            }
+
+            .page-2 {
                 padding: 30px 20px;
+            }
+
+            .date-time-picker {
+                grid-template-columns: 1fr;
             }
 
             .options-grid {
@@ -238,26 +357,44 @@
                 font-size: 12px;
             }
         }
-
-        .success-message {
-            display: none;
-            text-align: center;
-            color: #10b981;
-            font-weight: 500;
-            margin-top: 15px;
-            padding: 10px;
-            background: #ecfdf5;
-            border-radius: 8px;
-        }
     </style>
 </head>
 <body>
     <div class="container">
-        <div id="hero" class="hero"></div>
-        <div class="content">
+        <!-- PAGE 1: YES or NO -->
+        <div class="page page-1 active">
+            <div id="hero" class="hero"></div>
+            <div class="button-group-hero">
+                <button id="btnYes" class="btn-yes">Yes 💕</button>
+                <button id="btnNo" class="btn-no">No</button>
+            </div>
+        </div>
+
+        <!-- PAGE 2: DATE, TIME, and ACTIVITY PICKER -->
+        <div class="page page-2">
             <form id="dateForm">
-                <!-- Sections will be generated here by JavaScript -->
-                <div id="formSections"></div>
+                <!-- Date & Time Section -->
+                <div class="section">
+                    <div class="section-title">When?</div>
+                    <div class="date-time-picker">
+                        <div class="input-group">
+                            <label for="dateInput">Date</label>
+                            <input type="date" id="dateInput" name="date" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="timeInput">Time</label>
+                            <input type="time" id="timeInput" name="time" required>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Activity Section -->
+                <div class="section">
+                    <div class="section-title">Activity</div>
+                    <div id="activitySection" class="options-grid"></div>
+                </div>
+
+                <!-- Buttons -->
                 <div class="button-group">
                     <button type="submit" class="btn btn-primary">Send me your picks 💕</button>
                     <button type="reset" class="btn btn-secondary">Clear</button>
@@ -267,6 +404,7 @@
                 </div>
             </form>
         </div>
+
         <div class="footer-note" id="footerNote"></div>
     </div>
 
@@ -277,8 +415,8 @@
         const CONFIG = {
             // Header section
             headerTitle: "Will you go on a date with me?",
-            headerSubtitle: "Pick your favorite activity, place, and time! 🎉",
-            headerImage: "https://images.unsplash.com/photo-1516595183901-7a86d65ce338?w=600&h=250&fit=crop",
+            headerSubtitle: "I promise to make it fun! 🎉",
+            headerImage: "https://images.unsplash.com/photo-1516595183901-7a86d65ce338?w=600&h=300&fit=crop",
             
             // Activity options - EDIT HERE
             activities: [
@@ -286,22 +424,6 @@
                 { label: "🚶 Walk", value: "walk" },
                 { label: "🎬 Movie", value: "movie" },
                 { label: "🍽️ Dinner", value: "dinner" }
-            ],
-            
-            // Place/Location options - EDIT HERE
-            places: [
-                { label: "Downtown", value: "downtown" },
-                { label: "Park", value: "park" },
-                { label: "Beach", value: "beach" },
-                { label: "Café", value: "cafe" }
-            ],
-            
-            // Time slot options - EDIT HERE
-            timeSlots: [
-                { label: "Sat 4 Jan, 4 PM", value: "sat_4pm" },
-                { label: "Sat 4 Jan, 7 PM", value: "sat_7pm" },
-                { label: "Sun 5 Jan, 2 PM", value: "sun_2pm" },
-                { label: "Sun 5 Jan, 6 PM", value: "sun_6pm" }
             ],
             
             // WhatsApp phone number (without + sign, just country code + number) - EDIT HERE
@@ -316,14 +438,13 @@
 
         // Initialize the page on load
         document.addEventListener('DOMContentLoaded', function() {
-            renderHero();
-            renderForm();
-            renderFooter();
-            setupFormSubmission();
+            renderPage1();
+            renderPage2();
+            setupEventListeners();
         });
 
-        // Render hero section with background image and text
-        function renderHero() {
+        // Render Page 1: Hero with Yes/No buttons
+        function renderPage1() {
             const heroEl = document.getElementById('hero');
             heroEl.style.backgroundImage = `url('${CONFIG.headerImage}')`;
             
@@ -336,111 +457,123 @@
             heroEl.appendChild(heroContent);
         }
 
-        // Render form sections dynamically from CONFIG
-        function renderForm() {
-            const formSectionsEl = document.getElementById('formSections');
+        // Render Page 2: Date/Time picker and Activity section
+        function renderPage2() {
+            const activitySection = document.getElementById('activitySection');
             
-            // Activity section
-            formSectionsEl.appendChild(
-                createSection('Activity', 'activity', CONFIG.activities)
-            );
-            
-            // Place section
-            formSectionsEl.appendChild(
-                createSection('Place', 'place', CONFIG.places)
-            );
-            
-            // Time slot section
-            formSectionsEl.appendChild(
-                createSection('Time', 'time', CONFIG.timeSlots)
-            );
-        }
-
-        // Helper function to create a section with radio options
-        function createSection(title, groupName, options) {
-            const section = document.createElement('div');
-            section.className = 'section';
-            
-            const sectionTitle = document.createElement('div');
-            sectionTitle.className = 'section-title';
-            sectionTitle.textContent = title;
-            section.appendChild(sectionTitle);
-            
-            const grid = document.createElement('div');
-            grid.className = 'options-grid';
-            
-            options.forEach((option, index) => {
+            CONFIG.activities.forEach((activity, index) => {
                 const card = document.createElement('div');
                 card.className = 'option-card';
                 
                 const radio = document.createElement('input');
                 radio.type = 'radio';
-                radio.name = groupName;
-                radio.value = option.value;
-                radio.id = `${groupName}_${index}`;
+                radio.name = 'activity';
+                radio.value = activity.value;
+                radio.id = `activity_${index}`;
+                radio.required = true;
                 
                 const label = document.createElement('label');
-                label.htmlFor = `${groupName}_${index}`;
+                label.htmlFor = `activity_${index}`;
                 label.className = 'option-label';
-                label.textContent = option.label;
+                label.textContent = activity.label;
                 
                 card.appendChild(radio);
                 card.appendChild(label);
-                grid.appendChild(card);
+                activitySection.appendChild(card);
             });
-            
-            section.appendChild(grid);
-            return section;
-        }
 
-        // Render footer note
-        function renderFooter() {
+            // Set footer note
             document.getElementById('footerNote').textContent = CONFIG.footerNote;
         }
 
-        // Setup form submission
-        function setupFormSubmission() {
-            const form = document.getElementById('dateForm');
-            form.addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                // Get selected values
-                const activity = document.querySelector('input[name="activity"]:checked');
-                const place = document.querySelector('input[name="place"]:checked');
-                const time = document.querySelector('input[name="time"]:checked');
-                
-                // Validate all fields are selected
-                if (!activity || !place || !time) {
-                    alert('Please select an option for each category!');
-                    return;
-                }
-                
-                // Get the labels for display
-                const activityLabel = document.querySelector(`label[for="${activity.id}"]`).textContent;
-                const placeLabel = document.querySelector(`label[for="${place.id}"]`).textContent;
-                const timeLabel = document.querySelector(`label[for="${time.id}"]`).textContent;
-                
-                // Build the message
-                const message = `Hi! I'd love to go on a date! 💕\n\nHere are my picks:\n🎯 Activity: ${activityLabel}\n📍 Place: ${placeLabel}\n⏰ Time: ${timeLabel}`;
-                
-                // Encode the message for URL
-                const encodedMessage = encodeURIComponent(message);
-                
-                // Build WhatsApp URL
-                const whatsappURL = `https://wa.me/${CONFIG.whatsappNumber}?text=${encodedMessage}`;
-                
-                // Open WhatsApp
-                window.open(whatsappURL, '_blank');
-                
-                // Show success message
-                const successMsg = document.getElementById('successMessage');
-                successMsg.style.display = 'block';
-                
-                // Hide success message after 3 seconds
-                setTimeout(() => {
-                    successMsg.style.display = 'none';
-                }, 3000);
+        // Setup event listeners
+        function setupEventListeners() {
+            const btnYes = document.getElementById('btnYes');
+            const btnNo = document.getElementById('btnNo');
+            const page1 = document.querySelector('.page-1');
+            const page2 = document.querySelector('.page-2');
+
+            // Yes button: Go to page 2
+            btnYes.addEventListener('click', function() {
+                page1.classList.remove('active');
+                page2.classList.add('active');
             });
+
+            // No button: Move away when hovered/clicked
+            btnNo.addEventListener('mouseenter', function() {
+                moveButtonAway(btnNo);
+            });
+
+            btnNo.addEventListener('click', function(e) {
+                e.preventDefault();
+                moveButtonAway(btnNo);
+            });
+
+            // Form submission on page 2
+            document.getElementById('dateForm').addEventListener('submit', handleFormSubmission);
+        }
+
+        // Move the No button to a random position
+        function moveButtonAway(button) {
+            const maxX = window.innerWidth - button.offsetWidth - 20;
+            const maxY = window.innerHeight - button.offsetHeight - 20;
+            
+            const randomX = Math.random() * maxX;
+            const randomY = Math.random() * maxY;
+            
+            button.style.position = 'fixed';
+            button.style.left = randomX + 'px';
+            button.style.top = randomY + 'px';
+            button.style.transition = 'all 0.3s ease';
+        }
+
+        // Handle form submission on page 2
+        function handleFormSubmission(e) {
+            e.preventDefault();
+            
+            // Get selected values
+            const dateInput = document.getElementById('dateInput').value;
+            const timeInput = document.getElementById('timeInput').value;
+            const activity = document.querySelector('input[name="activity"]:checked');
+            
+            // Validate all fields are filled
+            if (!dateInput || !timeInput || !activity) {
+                alert('Please fill in all fields!');
+                return;
+            }
+            
+            // Get activity label
+            const activityLabel = document.querySelector(`label[for="${activity.id}"]`).textContent;
+            
+            // Format date nicely
+            const dateObj = new Date(dateInput);
+            const formattedDate = dateObj.toLocaleDateString('en-US', { 
+                weekday: 'short', 
+                month: 'short', 
+                day: 'numeric',
+                year: 'numeric'
+            });
+            
+            // Build the message
+            const message = `Hi! I'd love to go on a date! 💕\n\nHere are my picks:\n📅 Date: ${formattedDate}\n⏰ Time: ${timeInput}\n🎯 Activity: ${activityLabel}`;
+            
+            // Encode the message for URL
+            const encodedMessage = encodeURIComponent(message);
+            
+            // Build WhatsApp URL
+            const whatsappURL = `https://wa.me/${CONFIG.whatsappNumber}?text=${encodedMessage}`;
+            
+            // Open WhatsApp
+            window.open(whatsappURL, '_blank');
+            
+            // Show success message
+            const successMsg = document.getElementById('successMessage');
+            successMsg.style.display = 'block';
+            
+            // Hide success message after 3 seconds
+            setTimeout(() => {
+                successMsg.style.display = 'none';
+            }, 3000);
         }
     </script>
 </body>
