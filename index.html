@@ -173,7 +173,7 @@
         }
 
         .section {
-            margin-bottom: 35px;
+            margin-bottom: 40px;
         }
 
         .section:last-of-type {
@@ -184,22 +184,16 @@
             font-size: 16px;
             font-weight: 600;
             color: #333;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
             opacity: 0.7;
         }
 
-        .date-time-picker {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 12px;
-        }
-
         .options-grid {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 12px;
+            gap: 16px;
         }
 
         .option-card {
@@ -220,37 +214,44 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 16px 12px;
+            padding: 24px 20px;
             background: #f8f6ff;
             border: 2px solid #e0d5ff;
-            border-radius: 12px;
+            border-radius: 14px;
             cursor: pointer;
-            font-size: 14px;
+            font-size: 15px;
             font-weight: 500;
             color: #555;
             transition: all 0.3s ease;
             text-align: center;
-            min-height: 60px;
+            min-height: 80px;
             user-select: none;
+            line-height: 1.4;
         }
 
         .option-card input[type="radio"]:checked + .option-label {
             background: linear-gradient(135deg, #c084fc 0%, #e879f9 100%);
             color: white;
             border-color: #b06fd9;
-            box-shadow: 0 4px 15px rgba(192, 132, 252, 0.3);
-            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(192, 132, 252, 0.35);
+            transform: scale(1.02);
         }
 
         .option-label:hover {
             border-color: #c084fc;
             background: #faf8ff;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(192, 132, 252, 0.15);
+        }
+
+        .option-card input[type="radio"]:checked + .option-label:hover {
+            transform: scale(1.02);
         }
 
         .button-group {
             display: flex;
             gap: 12px;
-            margin-top: 35px;
+            margin-top: 40px;
         }
 
         .btn {
@@ -338,23 +339,23 @@
                 padding: 30px 20px;
             }
 
-            .date-time-picker {
-                grid-template-columns: 1fr;
+            .section {
+                margin-bottom: 30px;
             }
 
             .options-grid {
-                grid-template-columns: 1fr;
-                gap: 10px;
+                gap: 12px;
             }
 
             .option-label {
-                min-height: 50px;
-                padding: 12px 10px;
-                font-size: 13px;
+                padding: 18px 16px;
+                min-height: 70px;
+                font-size: 14px;
             }
 
             .button-group {
                 gap: 10px;
+                margin-top: 30px;
             }
 
             .btn {
