@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Date Proposal</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+            background: linear-gradient(135deg, #f5f1ff 0%, #fff0f8 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .hero {
+            position: relative;
+            height: 250px;
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            text-align: center;
+            padding: 40px 20px 30px;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.25);
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            color: white;
+        }
+
+        .hero h1 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 14px;
+            opacity: 0.95;
+            line-height: 1.4;
+        }
+
+        .content {
+            padding: 40px 30px;
+        }
+
+        .section {
+            margin-bottom: 35px;
+        }
+
+        .section:last-of-type {
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            opacity: 0.7;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .option-card {
+            position: relative;
+        }
+
+        .option-card input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px 12px;
+            background: #f8f6ff;
+            border: 2px solid #e0d5ff;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            color: #555;
+            transition: all 0.3s ease;
+            text-align: center;
+            min-height: 60px;
+            user-select: none;
+        }
+
+        .option-card input[type="radio"]:checked + .option-label {
+            background: linear-gradient(135deg, #c084fc 0%, #e879f9 100%);
+            color: white;
+            border-color: #b06fd9;
+            box-shadow: 0 4px 15px rgba(192, 132, 252, 0.3);
+            transform: scale(1.05);
+        }
+
+        .option-label:hover {
+            border-color: #c084fc;
+            background: #faf8ff;
+        }
+
+        .option-card input[type="radio"]:checked + .option-label:hover {
+            transform: scale(1.05);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 35px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 14px 24px;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #c084fc 0%, #e879f9 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(192, 132, 252, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(192, 132, 252, 0.4);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        .btn-secondary:hover {
+            background: #e0e0e0;
+        }
+
+        .footer-note {
+            text-align: center;
+            font-size: 13px;
+            color: #999;
+            padding: 0 30px 30px;
+            line-height: 1.5;
+            font-style: italic;
+        }
+
+        @media (max-width: 480px) {
+            .hero {
+                height: 200px;
+            }
+
+            .hero h1 {
+                font-size: 26px;
+            }
+
+            .content {
+                padding: 30px 20px;
+            }
+
+            .options-grid {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+
+            .option-label {
+                min-height: 50px;
+                padding: 12px 10px;
+                font-size: 13px;
+            }
+
+            .button-group {
+                gap: 10px;
+            }
+
+            .btn {
+                padding: 12px 20px;
+                font-size: 14px;
+            }
+
+            .footer-note {
+                padding: 0 20px 20px;
+                font-size: 12px;
+            }
+        }
+
+        .success-message {
+            display: none;
+            text-align: center;
+            color: #10b981;
+            font-weight: 500;
+            margin-top: 15px;
+            padding: 10px;
+            background: #ecfdf5;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="hero" class="hero"></div>
+        <div class="content">
+            <form id="dateForm">
+                <!-- Sections will be generated here by JavaScript -->
+                <div id="formSections"></div>
+                <div class="button-group">
+                    <button type="submit" class="btn btn-primary">Send me your picks 💕</button>
+                    <button type="reset" class="btn btn-secondary">Clear</button>
+                </div>
+                <div class="success-message" id="successMessage">
+                    ✓ Sent! Waiting for your response...
+                </div>
+            </form>
+        </div>
+        <div class="footer-note" id="footerNote"></div>
+    </div>
+
+    <script>
+        // ========================================
+        // EDIT HERE: Configuration Object
+        // ========================================
+        const CONFIG = {
+            // Header section
+            headerTitle: "Will you go on a date with me?",
+            headerSubtitle: "Pick your favorite activity, place, and time! 🎉",
+            headerImage: "https://images.unsplash.com/photo-1516595183901-7a86d65ce338?w=600&h=250&fit=crop",
+            
+            // Activity options - EDIT HERE
+            activities: [
+                { label: "☕ Coffee", value: "coffee" },
+                { label: "🚶 Walk", value: "walk" },
+                { label: "🎬 Movie", value: "movie" },
+                { label: "🍽️ Dinner", value: "dinner" }
+            ],
+            
+            // Place/Location options - EDIT HERE
+            places: [
+                { label: "Downtown", value: "downtown" },
+                { label: "Park", value: "park" },
+                { label: "Beach", value: "beach" },
+                { label: "Café", value: "cafe" }
+            ],
+            
+            // Time slot options - EDIT HERE
+            timeSlots: [
+                { label: "Sat 4 Jan, 4 PM", value: "sat_4pm" },
+                { label: "Sat 4 Jan, 7 PM", value: "sat_7pm" },
+                { label: "Sun 5 Jan, 2 PM", value: "sun_2pm" },
+                { label: "Sun 5 Jan, 6 PM", value: "sun_6pm" }
+            ],
+            
+            // WhatsApp phone number (without + sign, just country code + number) - EDIT HERE
+            whatsappNumber: "919876543210",
+            
+            // Footer note - EDIT HERE
+            footerNote: "No pressure at all. Just pick whatever feels right. 💚"
+        };
+        // ========================================
+        // End of CONFIG - Do not edit below unless you know what you're doing!
+        // ========================================
+
+        // Initialize the page on load
+        document.addEventListener('DOMContentLoaded', function() {
+            renderHero();
+            renderForm();
+            renderFooter();
+            setupFormSubmission();
+        });
+
+        // Render hero section with background image and text
+        function renderHero() {
+            const heroEl = document.getElementById('hero');
+            heroEl.style.backgroundImage = `url('${CONFIG.headerImage}')`;
+            
+            const heroContent = document.createElement('div');
+            heroContent.className = 'hero-content';
+            heroContent.innerHTML = `
+                <h1>${CONFIG.headerTitle}</h1>
+                <p>${CONFIG.headerSubtitle}</p>
+            `;
+            heroEl.appendChild(heroContent);
+        }
+
+        // Render form sections dynamically from CONFIG
+        function renderForm() {
+            const formSectionsEl = document.getElementById('formSections');
+            
+            // Activity section
+            formSectionsEl.appendChild(
+                createSection('Activity', 'activity', CONFIG.activities)
+            );
+            
+            // Place section
+            formSectionsEl.appendChild(
+                createSection('Place', 'place', CONFIG.places)
+            );
+            
+            // Time slot section
+            formSectionsEl.appendChild(
+                createSection('Time', 'time', CONFIG.timeSlots)
+            );
+        }
+
+        // Helper function to create a section with radio options
+        function createSection(title, groupName, options) {
+            const section = document.createElement('div');
+            section.className = 'section';
+            
+            const sectionTitle = document.createElement('div');
+            sectionTitle.className = 'section-title';
+            sectionTitle.textContent = title;
+            section.appendChild(sectionTitle);
+            
+            const grid = document.createElement('div');
+            grid.className = 'options-grid';
+            
+            options.forEach((option, index) => {
+                const card = document.createElement('div');
+                card.className = 'option-card';
+                
+                const radio = document.createElement('input');
+                radio.type = 'radio';
+                radio.name = groupName;
+                radio.value = option.value;
+                radio.id = `${groupName}_${index}`;
+                
+                const label = document.createElement('label');
+                label.htmlFor = `${groupName}_${index}`;
+                label.className = 'option-label';
+                label.textContent = option.label;
+                
+                card.appendChild(radio);
+                card.appendChild(label);
+                grid.appendChild(card);
+            });
+            
+            section.appendChild(grid);
+            return section;
+        }
+
+        // Render footer note
+        function renderFooter() {
+            document.getElementById('footerNote').textContent = CONFIG.footerNote;
+        }
+
+        // Setup form submission
+        function setupFormSubmission() {
+            const form = document.getElementById('dateForm');
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Get selected values
+                const activity = document.querySelector('input[name="activity"]:checked');
+                const place = document.querySelector('input[name="place"]:checked');
+                const time = document.querySelector('input[name="time"]:checked');
+                
+                // Validate all fields are selected
+                if (!activity || !place || !time) {
+                    alert('Please select an option for each category!');
+                    return;
+                }
+                
+                // Get the labels for display
+                const activityLabel = document.querySelector(`label[for="${activity.id}"]`).textContent;
+                const placeLabel = document.querySelector(`label[for="${place.id}"]`).textContent;
+                const timeLabel = document.querySelector(`label[for="${time.id}"]`).textContent;
+                
+                // Build the message
+                const message = `Hi! I'd love to go on a date! 💕\n\nHere are my picks:\n🎯 Activity: ${activityLabel}\n📍 Place: ${placeLabel}\n⏰ Time: ${timeLabel}`;
+                
+                // Encode the message for URL
+                const encodedMessage = encodeURIComponent(message);
+                
+                // Build WhatsApp URL
+                const whatsappURL = `https://wa.me/${CONFIG.whatsappNumber}?text=${encodedMessage}`;
+                
+                // Open WhatsApp
+                window.open(whatsappURL, '_blank');
+                
+                // Show success message
+                const successMsg = document.getElementById('successMessage');
+                successMsg.style.display = 'block';
+                
+                // Hide success message after 3 seconds
+                setTimeout(() => {
+                    successMsg.style.display = 'none';
+                }, 3000);
+            });
+        }
+    </script>
+</body>
+</html>
