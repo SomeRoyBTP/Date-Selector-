@@ -192,40 +192,13 @@
 
         .date-time-picker {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr;
             gap: 12px;
-        }
-
-        .input-group {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .input-group label {
-            font-size: 13px;
-            font-weight: 500;
-            color: #666;
-            margin-bottom: 6px;
-        }
-
-        .input-group input {
-            padding: 12px;
-            border: 2px solid #e0d5ff;
-            border-radius: 8px;
-            font-size: 14px;
-            font-family: inherit;
-            transition: all 0.3s ease;
-        }
-
-        .input-group input:focus {
-            outline: none;
-            border-color: #c084fc;
-            box-shadow: 0 0 0 3px rgba(192, 132, 252, 0.1);
         }
 
         .options-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr;
             gap: 12px;
         }
 
@@ -410,22 +383,13 @@
             </div>
         </div>
 
-        <!-- PAGE 2: DATE, TIME, and ACTIVITY PICKER -->
+        <!-- PAGE 2: DATE and ACTIVITY PICKER -->
         <div class="page page-2">
             <form id="dateForm">
-                <!-- Date & Time Section -->
+                <!-- Date Section -->
                 <div class="section">
                     <div class="section-title">When?</div>
-                    <div class="date-time-picker">
-                        <div class="input-group">
-                            <label for="dateInput">Date</label>
-                            <input type="date" id="dateInput" name="date" required>
-                        </div>
-                        <div class="input-group">
-                            <label for="timeInput">Time</label>
-                            <input type="time" id="timeInput" name="time" required>
-                        </div>
-                    </div>
+                    <div id="dateSection" class="options-grid"></div>
                 </div>
 
                 <!-- Activity Section -->
@@ -458,12 +422,18 @@
             headerSubtitle: "I promise to make it fun! 🎉",
             headerImage: "https://images.unsplash.com/photo-1516595183901-7a86d65ce338?w=600&h=300&fit=crop",
             
+            // Date options - EDIT HERE
+            dateOptions: [
+                { label: "Friday 2nd Oct\nAfternoon", value: "fri_2_oct" },
+                { label: "Saturday 3rd Oct\nAfternoon", value: "sat_3_oct" },
+                { label: "Sunday 4th Oct\nAfternoon", value: "sun_4_oct" }
+            ],
+            
             // Activity options - EDIT HERE
             activities: [
-                { label: "☕ Coffee", value: "coffee" },
-                { label: "🚶 Walk", value: "walk" },
-                { label: "🎬 Movie", value: "movie" },
-                { label: "🍽️ Dinner", value: "dinner" }
+                { label: "🎬 Movie Date\n(Endgame/Heart of the Beast)", value: "movie_date" },
+                { label: "🐶 Pup Date\n(Meeting & Eating with Puchi)", value: "pup_date" },
+                { label: "🎬🐶 Movie and the Pup Date", value: "movie_pup_date" }
             ],
             
             // WhatsApp phone number (without + sign, just country code + number) - EDIT HERE
@@ -497,8 +467,43 @@
             heroEl.appendChild(heroContent);
         }
 
-        // Render Page 2: Date/Time picker and Activity section
+        // Render Page 2: Date and Activity sections
         function renderPage2() {
+            renderDateOptions();
+            renderActivityOptions();
+
+            // Set footer note
+            document.getElementById('footerNote').textContent = CONFIG.footerNote;
+        }
+
+        // Render date options
+        function renderDateOptions() {
+            const dateSection = document.getElementById('dateSection');
+            
+            CONFIG.dateOptions.forEach((dateOption, index) => {
+                const card = document.createElement('div');
+                card.className = 'option-card';
+                
+                const radio = document.createElement('input');
+                radio.type = 'radio';
+                radio.name = 'date';
+                radio.value = dateOption.value;
+                radio.id = `date_${index}`;
+                radio.required = true;
+                
+                const label = document.createElement('label');
+                label.htmlFor = `date_${index}`;
+                label.className = 'option-label';
+                label.innerHTML = dateOption.label;
+                
+                card.appendChild(radio);
+                card.appendChild(label);
+                dateSection.appendChild(card);
+            });
+        }
+
+        // Render activity options
+        function renderActivityOptions() {
             const activitySection = document.getElementById('activitySection');
             
             CONFIG.activities.forEach((activity, index) => {
@@ -515,15 +520,12 @@
                 const label = document.createElement('label');
                 label.htmlFor = `activity_${index}`;
                 label.className = 'option-label';
-                label.textContent = activity.label;
+                label.innerHTML = activity.label;
                 
                 card.appendChild(radio);
                 card.appendChild(label);
                 activitySection.appendChild(card);
             });
-
-            // Set footer note
-            document.getElementById('footerNote').textContent = CONFIG.footerNote;
         }
 
         // Setup event listeners
@@ -539,7 +541,7 @@
                 page2.classList.add('active');
             });
 
-            // No button: Disappear on hover and show text
+            // No button: Prevent any action
             btnNo.addEventListener('click', function(e) {
                 e.preventDefault();
             });
@@ -553,30 +555,21 @@
             e.preventDefault();
             
             // Get selected values
-            const dateInput = document.getElementById('dateInput').value;
-            const timeInput = document.getElementById('timeInput').value;
+            const dateOption = document.querySelector('input[name="date"]:checked');
             const activity = document.querySelector('input[name="activity"]:checked');
             
             // Validate all fields are filled
-            if (!dateInput || !timeInput || !activity) {
+            if (!dateOption || !activity) {
                 alert('Please fill in all fields!');
                 return;
             }
             
-            // Get activity label
+            // Get labels
+            const dateLabel = document.querySelector(`label[for="${dateOption.id}"]`).textContent;
             const activityLabel = document.querySelector(`label[for="${activity.id}"]`).textContent;
             
-            // Format date nicely
-            const dateObj = new Date(dateInput);
-            const formattedDate = dateObj.toLocaleDateString('en-US', { 
-                weekday: 'short', 
-                month: 'short', 
-                day: 'numeric',
-                year: 'numeric'
-            });
-            
             // Build the message
-            const message = `Hi! I'd love to go on a date! 💕\n\nHere are my picks:\n📅 Date: ${formattedDate}\n⏰ Time: ${timeInput}\n🎯 Activity: ${activityLabel}`;
+            const message = `Hi! I'd love to go on a date! 💕\n\nHere are my picks:\n📅 Date: ${dateLabel}\n🎯 Activity: ${activityLabel}`;
             
             // Encode the message for URL
             const encodedMessage = encodeURIComponent(message);
